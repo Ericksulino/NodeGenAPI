@@ -9,6 +9,10 @@ const app = express();
 //config do dotenv -variaveis de ambiente
 dotenv.config();
 
+//Carrega models
+const Product = require('./models/product'); 
+
+
 //Carregando rotas
 const indexRoute = require('./routes/indexRoute');
 const productRoute = require('./routes/productRoute');
