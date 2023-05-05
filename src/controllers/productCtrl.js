@@ -1,51 +1,49 @@
 'use strict'
 
-const mongoose = require('mongoose');
-const Product = mongoose.model('Product');
 const ValidationContrac = require('../validators/fluent-validator');
 const repository = require('../repositories/productRep')
 
-exports.get = (req, res, next) =>{
-    repository.get()
-    .then(data =>{
+exports.get = async (req, res, next) =>{
+    try{
+        const data = await repository.get();
         res.status(200).send(data);
-    })
-    .catch(e =>{
-        res.status(400).send({message: "find fail!", data: e});
-    });
+    }
+    catch (err) {
+        res.status(400).send({message: "find fail!", error: err.message});
+    };
 };
 
-exports.getBySlug = (req, res, next) =>{
-    repository.getBySlug(req.params.slug)
-    .then(data =>{
+exports.getBySlug = async (req, res, next) =>{
+    try{
+        const data = await repository.getBySlug(req.params.slug)
         res.status(200).send(data);
-    })
-    .catch(e =>{
-        res.status(400).send({message: "find fail!", data: e});
-    });
+    }
+    catch(err) {
+        res.status(400).send({message: "find fail!", error: err.message});
+    };
 };
 
-exports.getByTag = (req, res, next) =>{
-    repository.getByTag(req.params.tag)
-    .then(data =>{
+exports.getByTag = async (req, res, next) =>{
+    try{
+        const data = await repository.getByTag(req.params.tag)
         res.status(200).send(data);
-    })
-    .catch(e =>{
-        res.status(400).send({message: "find fail!", data: e});
-    });
+    }
+    catch(err){
+        res.status(400).send({message: "find fail!", error: err.message});
+    };
 };
 
-exports.getById = (req, res, next) =>{
-    repository.getById(req.params.id)
-    .then(data =>{
+exports.getById = async (req, res, next) =>{
+    try{
+        const data = await repository.getById(req.params.id);
         res.status(200).send(data);
-    })
-    .catch(e =>{
-        res.status(400).send({message: "find fail!", data: e});
-    });
+    }
+    catch(err) {
+        res.status(400).send({message: "find fail!", error: err.message});
+    };
 };
 
-exports.post = (req, res, next) =>{
+exports.post = async (req, res, next) =>{
     let contract = new ValidationContrac();
     contract.hasMinLen(req.body.title, 3, 'O Titulo deve conter pelo menos 3 caracteres');
     contract.hasMinLen(req.body.slug, 3, 'O Slug deve conter pelo menos 3 caracteres');
@@ -58,31 +56,31 @@ exports.post = (req, res, next) =>{
         return;
     }
 
-    repository.create(req.body)
-    .then(x =>{
+    try {
+        await repository.create(req.body)
         res.status(201).send({message: "create sucessfull!"});
-    })
-    .catch(e =>{
-        res.status(400).send({message: "create fail!", data: e});
-    });
+    }
+    catch(err){
+        res.status(400).send({message: "create fail!", error: err.message});
+    };
 };
 
-exports.put = (req, res, next) =>{
-    repository.update(req.params.id,req.body)
-    .then( x =>{
+exports.put = async (req, res, next) =>{
+    try{
+        await repository.update(req.params.id,req.body)
         res.status(200).send({message: "update sucessfull!"});
-    })
-    .catch( e =>{
-        res.status(400).send({message:"upadte fail",data: e});
-    })
+    }
+    catch(err){
+        res.status(400).send({message:"upadte fail",error: err.message});
+    }
 };
 
-exports.delete = (req, res, next) =>{
-    repository.delete(req.params.id)
-    .then( x =>{
+exports.delete = async (req, res, next) =>{
+    try {
+        await repository.delete(req.params.id)
         res.status(200).send({message: "delete sucessfull!"});
-    })
-    .catch( e =>{
-        res.status(400).send({message:"delete fail",data: e});
-    })
+    }
+    catch(err){
+        res.status(400).send({message:"delete fail",error: err.message});
+    }
 };
