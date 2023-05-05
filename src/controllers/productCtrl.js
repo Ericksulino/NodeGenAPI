@@ -72,5 +72,12 @@ exports.put = (req, res, next) =>{
 };
 
 exports.delete = (req, res, next) =>{
-    res.status(200).send(req.body);
+    Product
+    .findByIdAndRemove(req.params.id)
+    .then( x =>{
+        res.status(200).send({message: "delete sucessfull!"});
+    })
+    .catch( e =>{
+        res.status(400).send({message:"delete fail",data: e});
+    })
 };
