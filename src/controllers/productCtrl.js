@@ -1,6 +1,8 @@
 'use strict'
+
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const ValidationContrac = require('../validators/fluent-validator');
 
 exports.get = (req, res, next) =>{
     Product.find({ active: true}, "title price slug")
@@ -43,6 +45,18 @@ exports.getById = (req, res, next) =>{
 };
 
 exports.post = (req, res, next) =>{
+    let contract = new ValidationContrac();
+    contract.hasMinLen(req.body.title, 3, 'O Titulo deve conter pelo menos 3 caracteres');
+    contract.hasMinLen(req.body.slug, 3, 'O Slug deve conter pelo menos 3 caracteres');
+    contract.hasMinLen(req.body.descripton, 5, 'A descrição deve conter pelo menos 5 caracteres');
+    contract.isDifZero(req.body.price,'O valor do produto deve ser diferente de zero!');
+
+    //Se os dados forem invalidos
+    if(!contract.isValid()){
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
+
     var product = new Product(req.body)
     product.save()
     .then(x =>{
