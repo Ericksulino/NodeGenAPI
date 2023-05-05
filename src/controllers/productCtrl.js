@@ -59,7 +59,8 @@ exports.put = (req, res, next) =>{
         $set:{
             title: req.body.title,
             description: req.body.description,
-            price: req.body.price
+            price: req.body.price,
+            slug: req.body.slug
         }
     })
     .then( x =>{
