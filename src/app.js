@@ -12,6 +12,7 @@ dotenv.config();
 //Carrega models
 const Product = require('./models/product'); 
 const Costumer = require('./models/costumer');
+const Order = require('./models/order');
 
 //Carregando rotas
 const indexRoute = require('./routes/indexRoute');
