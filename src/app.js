@@ -18,6 +18,7 @@ const Order = require('./models/order');
 const indexRoute = require('./routes/indexRoute');
 const productRoute = require('./routes/productRoute');
 const costumerRoute = require('./routes/costumerRoute');
+const orderRoute = require('./routes/orderRoute');
 
 //Rota com o Banco de dados
 const connectDatabase = require("./database/db")
@@ -32,4 +33,5 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use('/',indexRoute);
 app.use('/products',productRoute);
 app.use('/costumer',costumerRoute);
+app.use('/order',orderRoute);
 module.exports = app;
