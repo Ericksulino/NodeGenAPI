@@ -34,7 +34,7 @@ exports.delete = async (id) =>{
 }
 
 exports.auth = async (data) =>{
-    const res = await Costumer.find({
+    const res = await Costumer.findOne({
         email: data.email,
         password: data.password
     });

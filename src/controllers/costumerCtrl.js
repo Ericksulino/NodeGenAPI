@@ -77,7 +77,10 @@ exports.authenticate = async (req, res, next) =>{
             email: req.body.email,
             password: md5(req.body.password + process.env.SECRET_JWT)
         })
-
+        if(!costumer){
+            res.status(404).send({message: "email or password incorrect!"});
+            return;
+        }
         //console.log(costumer)
         const token = await authService.generateToken({
             email: costumer.email,
@@ -85,7 +88,11 @@ exports.authenticate = async (req, res, next) =>{
         })
 
         res.status(201).send({
-            token: token
+            token: token,
+            data: {
+                email: costumer.email,
+                name: costumer.name
+            }
         });
     }
     catch(err){
