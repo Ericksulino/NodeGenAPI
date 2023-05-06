@@ -100,3 +100,35 @@ exports.authenticate = async (req, res, next) =>{
         res.status(400).send({message: "login fail!", error: err.message});
     };
 };
+
+exports.refreshToken = async (req, res, next) =>{
+    const costumer = await repository.getById(req.userId);
+    
+    try {
+        const costumer = await repository.auth({
+            email: req.body.email,
+            password: md5(req.body.password + process.env.SECRET_JWT)
+        })
+        if(!costumer){
+            res.status(404).send({message: "client not found!"});
+            return;
+        }
+        
+        const token = await authService.generateToken({
+            id: costumer._id,
+            email: costumer.email,
+            name: costumer.name
+        })
+
+        res.status(201).send({
+            token: token,
+            data: {
+                email: costumer.email,
+                name: costumer.name
+            }
+        });
+    }
+    catch(err){
+        res.status(400).send({message: "login fail!", error: err.message});
+    };
+};

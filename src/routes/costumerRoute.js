@@ -17,4 +17,6 @@ router.delete('/:id',authService.authorize, controller.delete);
 
 router.post('/auth', controller.authenticate);
 
+router.post('/refresh',authService.authorize, controller.refreshToken);
+
 module.exports = router;
