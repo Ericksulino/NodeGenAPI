@@ -30,8 +30,9 @@ exports.authorize = (req, res, next) =>{
                 if (error) {
                     return res.status(401).send({ message: "Token inválido" });
                   }
-
-              
+                const data = await this.decodeToken(token);
+                //console.log(data);
+                req.userId = data.id;
                 return next();
             })
             

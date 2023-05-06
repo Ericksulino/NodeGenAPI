@@ -55,7 +55,7 @@ exports.post = async (req, res, next) =>{
         res.status(400).send(contract.errors()).end();
         return;
     }
-
+    
     try {
         await repository.create(req.body)
         res.status(201).send({message: "create sucessfull!"});

@@ -2,6 +2,7 @@
 
 const repository = require('../repositories/orderRep')
 const guid = require('guid');
+const authService = require("../services/authServ");
 
 exports.get = async (req, res, next) =>{
     try{
@@ -14,11 +15,12 @@ exports.get = async (req, res, next) =>{
 };
 
 exports.post = async (req, res, next) =>{
-    
+
+    //console.log(req.userId);
     try {
         await repository.create({
 
-            costumer: req.body.costumer,
+            costumer: req.userId,
             number: guid.raw().substring(0,6),
             items: req.body.items
         })

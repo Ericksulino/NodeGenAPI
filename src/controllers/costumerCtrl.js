@@ -36,7 +36,7 @@ exports.post = async (req, res, next) =>{
         res.status(400).send(contract.errors()).end();
         return;
     }
-
+    
     try {
         await repository.create({
             name: req.body.name,
@@ -83,6 +83,7 @@ exports.authenticate = async (req, res, next) =>{
         }
         //console.log(costumer)
         const token = await authService.generateToken({
+            id: costumer._id,
             email: costumer.email,
             name: costumer.name
         })
