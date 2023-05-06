@@ -32,3 +32,11 @@ exports.update = async (id, data) =>{
 exports.delete = async (id) =>{
     await Costumer.findByIdAndRemove(id);
 }
+
+exports.auth = async (data) =>{
+    const res = await Costumer.find({
+        email: data.email,
+        password: data.password
+    });
+    return res;
+};

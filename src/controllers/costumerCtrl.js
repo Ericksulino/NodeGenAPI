@@ -3,6 +3,7 @@
 const ValidationContrac = require('../validators/fluent-validator');
 const repository = require('../repositories/costumerRep');
 const md5 = require('md5');
+const authService = require("../services/authServ");
 
 exports.get = async (req, res, next) =>{
     try{
@@ -67,4 +68,27 @@ exports.delete = async (req, res, next) =>{
     catch(err){
         res.status(400).send({message:"delete fail",error: err.message});
     }
+};
+
+exports.authenticate = async (req, res, next) =>{
+
+    try {
+        const costumer = await repository.auth({
+            email: req.body.email,
+            password: md5(req.body.password + process.env.SECRET_JWT)
+        })
+
+        //console.log(costumer)
+        const token = await authService.generateToken({
+            email: costumer.email,
+            name: costumer.name
+        })
+
+        res.status(201).send({
+            token: token
+        });
+    }
+    catch(err){
+        res.status(400).send({message: "login fail!", error: err.message});
+    };
 };
