@@ -102,13 +102,11 @@ exports.authenticate = async (req, res, next) =>{
 };
 
 exports.refreshToken = async (req, res, next) =>{
-    const costumer = await repository.getById(req.userId);
-    
+
     try {
-        const costumer = await repository.auth({
-            email: req.body.email,
-            password: md5(req.body.password + process.env.SECRET_JWT)
-        })
+        
+        const costumer = await repository.getById(req.userId);
+
         if(!costumer){
             res.status(404).send({message: "client not found!"});
             return;
