@@ -41,7 +41,8 @@ exports.post = async (req, res, next) =>{
         await repository.create({
             name: req.body.name,
             email: req.body.email,
-            password: md5(req.body.password + process.env.SECRET_JWT)
+            password: md5(req.body.password + process.env.SECRET_JWT),
+            roles:["user"]
         })
         res.status(201).send({message: "create sucessfull!"});
     }
@@ -85,7 +86,8 @@ exports.authenticate = async (req, res, next) =>{
         const token = await authService.generateToken({
             id: costumer._id,
             email: costumer.email,
-            name: costumer.name
+            name: costumer.name,
+            roles: costumer.roles
         })
 
         res.status(201).send({
@@ -104,7 +106,7 @@ exports.authenticate = async (req, res, next) =>{
 exports.refreshToken = async (req, res, next) =>{
 
     try {
-        
+
         const costumer = await repository.getById(req.userId);
 
         if(!costumer){
@@ -115,7 +117,8 @@ exports.refreshToken = async (req, res, next) =>{
         const token = await authService.generateToken({
             id: costumer._id,
             email: costumer.email,
-            name: costumer.name
+            name: costumer.name,
+            roles: costumer.roles
         })
 
         res.status(201).send({
