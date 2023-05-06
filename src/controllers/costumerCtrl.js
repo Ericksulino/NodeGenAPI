@@ -1,7 +1,8 @@
 'use strict'
 
 const ValidationContrac = require('../validators/fluent-validator');
-const repository = require('../repositories/costumerRep')
+const repository = require('../repositories/costumerRep');
+const md5 = require('md5');
 
 exports.get = async (req, res, next) =>{
     try{
@@ -36,7 +37,11 @@ exports.post = async (req, res, next) =>{
     }
 
     try {
-        await repository.create(req.body)
+        await repository.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: md5(req.body.password + process.env.SECRET_JWT)
+        })
         res.status(201).send({message: "create sucessfull!"});
     }
     catch(err){
