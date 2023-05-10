@@ -26,7 +26,9 @@ const connectDatabase = require("./database/db")
 //Conexão com o Banco de dados
 connectDatabase()
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit:'5mb'
+}));
 app.use(bodyParser.urlencoded({extended:false}))
 
 
